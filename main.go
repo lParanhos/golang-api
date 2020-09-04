@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -18,9 +19,34 @@ func bookList(w http.ResponseWriter, r *http.Request) {
 	encode.Encode(Books)
 }
 
+func createBook(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	body, error := ioutil.ReadAll(r.Body)
+	if error != nil {
+		//error handler
+	}
+
+	var newBook Book
+	json.Unmarshal(body, &newBook)
+	newBook.ID = len(Books) + 1
+	Books = append(Books, newBook)
+
+	encode := json.NewEncoder(w)
+	encode.Encode(Books)
+}
+
+func booksRoutes(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		bookList(w, r)
+	} else if r.Method == "POST" {
+		createBook(w, r)
+	}
+}
+
 func handlersConfig() {
 	http.HandleFunc("/", welcomeRoute)
-	http.HandleFunc("/books", bookList)
+	http.HandleFunc("/books", booksRoutes)
 }
 
 type Book struct {
