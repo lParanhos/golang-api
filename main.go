@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -48,7 +49,7 @@ func serverConfig() {
 	handlersConfig()
 
 	fmt.Println("Server is listening in port 1337....")
-	http.ListenAndServe(":1337", nil) // DefaultServerMux
+	log.Fatal(http.ListenAndServe(":1337", nil)) // DefaultServerMux
 }
 
 func main() {
