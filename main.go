@@ -12,6 +12,8 @@ func welcomeRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func bookList(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	encode := json.NewEncoder(w)
 	encode.Encode(Books)
 }
@@ -22,9 +24,9 @@ func handlersConfig() {
 }
 
 type Book struct {
-	ID     int
-	Titulo string
-	Autor  string
+	ID     int    `json:"id"`
+	Titulo string `json:"titulo"`
+	Autor  string `json:"autor"`
 }
 
 var Books []Book = []Book{
