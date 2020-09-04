@@ -21,6 +21,7 @@ func bookList(w http.ResponseWriter, r *http.Request) {
 
 func createBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 
 	body, error := ioutil.ReadAll(r.Body)
 	if error != nil {
