@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 func welcomeRoute(w http.ResponseWriter, r *http.Request) {
@@ -45,9 +47,21 @@ func booksRoutes(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func searchBook(w http.ResponseWriter, r *http.Request) {
+	parts := strings.Split(r.URL.Path, "/")
+
+	if len(parts) > 3 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	var id int = strconv.Atoi(parts[2])
+}
+
 func handlersConfig() {
 	http.HandleFunc("/", welcomeRoute)
 	http.HandleFunc("/books", booksRoutes)
+	http.HandleFunc("/books/", searchBook)
 }
 
 type Book struct {
